@@ -1,4 +1,4 @@
-pandasai
+pandasai==2.2.3
 pandas==1.5.3
 streamlit
 numpy==1.25.2
