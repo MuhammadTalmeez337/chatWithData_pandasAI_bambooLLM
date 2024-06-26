@@ -1,8 +1,6 @@
-from pandasai.llm.local_llm import LocalLLM ## Importing LocalLLM for local model
 import streamlit as st 
-import pandas as pd # Pandas for data manipulation
-from pandasai import SmartDataframe # SmartDataframe for interacting with data using LLM
-import streamlit.components.v1 as components
+import pandas as pd 
+from pandasai import SmartDataframe
 #from pandasai.llm import Starcoder, Falcon
 #falcon_llm = Falcon(api_token='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')
 
