@@ -1,4 +1,4 @@
-pandasai
-pandas
-streamlit
-numpy==1.26.4
+pandasai==2.2.3
+pandas==1.5.3
+streamlit==1.25.0
+numpy==1.25.2
