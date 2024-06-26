@@ -1,6 +1,7 @@
 import streamlit as st 
 import pandas as pd 
-from pandasai import SmartDataframe
+#from pandasai import SmartDataframe
+from pandasai.smart_dataframe import SmartDataframe
 #from pandasai.llm import Starcoder, Falcon
 #falcon_llm = Falcon(api_token='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')
 
