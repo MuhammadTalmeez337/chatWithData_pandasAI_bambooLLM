@@ -1,21 +1,9 @@
 import streamlit as st 
 import pandas as pd 
-#from pandasai import SmartDataframe
-from pandasai.smart_dataframe import SmartDataframe
-#from pandasai.llm import Starcoder, Falcon
-#falcon_llm = Falcon(api_token='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')
-
-# from pandasai.llm import HuggingFaceTextGen
-# llm = HuggingFaceTextGen(
-#     inference_server_url="http://127.0.0.1:8080"
-# )
-
+from pandasai import SmartDataframe
 from pandasai.llm import BambooLLM
 
 llm = BambooLLM(api_key='$2a$10$1XGK3zalu3yyVXEBAQDr4.g9s8.LZWy.pJ5.FRZ07tOcPR1qXMOEe')
-
-# # Set layout configuration for the Streamlit page
-#st.set_page_config(layout='wide')
 
 st.set_page_config(
     page_title="Chat with Data",
