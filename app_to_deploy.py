@@ -2,9 +2,8 @@ import streamlit as st
 import pandas as pd 
 from pandasai import SmartDataframe
 from pandasai.smart_dataframe import SmartDataframe
-
-#from pandasai.llm import Starcoder, Falcon
-#falcon_llm = Falcon(api_token='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')
+import streamlit_authenticator as stauth
+import pickle
 
 # from pandasai.llm import HuggingFaceTextGen
 # llm = HuggingFaceTextGen(
@@ -22,61 +21,87 @@ llm = GooglePalm(api_key= 'AIzaSyBFIU_KCHJ5nyTSgkYx05PJB9GaXW7_CaA')
 
 st.set_page_config(
     page_title="Chat with Data",
-    page_icon="🧊",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Set title for the Streamlit application
-st.title("Chat with your data")
+# ---- User authentication ----
+names = ["user a", "user b"]
+usernames = ["usera", "userb"]
 
-st.image('charts for sreamlit.png', caption='PowerBI Dashboard')
+file_path = "hashed_pw.pkl"
+with open(file_path, "rb") as file:
+    hashed_passwords = pickle.load(file)
 
-# Function to chat with CSV data
-def chat_with_csv(df,query):
-    # Initialize SmartDataframe with DataFrame and LLM configuration
-    pandas_ai = SmartDataframe(df, config={"llm": llm})
-    # Chat with the DataFrame using the provided query
-    result = pandas_ai.chat(query)
-    return result
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
+    "Chat with Data", "abcdef", cookie_expiry_days=3)
 
-curr_df = pd.read_csv('jobs_bayt_c2.csv')
+name, authentication_status, username = authenticator.login("Login", "main")
 
-if curr_df is not None:
-    st.info("Files uploaded successfully")
-    st.dataframe(curr_df.head(3),use_container_width=True)
-    input_text = st.text_area("Enter the query")
+if authentication_status == False:
+    st.error("Username/password is incorrect")
 
-    #Perform analysis
-    if st.button("Chat with data"):
-        if input_text:
-            st.info("Your Query: "+ input_text)
-            with st.spinner("Generating response..."):
-                result = chat_with_csv(curr_df,input_text)
-                st.success(result)
+if authentication_status == None:
+    st.warning("Please enter your username and password")
 
-# # Upload multiple CSV files
-# input_csvs = st.sidebar.file_uploader("Upload your Data files", type=['csv'], accept_multiple_files=True)
+if authentication_status:
+    #@st.cache
+    # Set title for the Streamlit application
 
-# # Check if CSV files are uploaded
-# if input_csvs:
-#     # Select a CSV file from the uploaded files using a dropdown menu
-#     selected_file = st.selectbox("Select your Data file", [file.name for file in input_csvs])
-#     selected_index = [file.name for file in input_csvs].index(selected_file)
+    st.title("Chat with your data")
 
-#     #load and display the selected csv file 
-#     st.info("Files uploaded successfully")
-#     data = pd.read_csv(input_csvs[selected_index])
-#     st.dataframe(data.head(3),use_container_width=True)
+    st.image('charts for sreamlit.png', caption='PowerBI Dashboard')
 
-#     #Enter the query for analysis
-#     #st.info("Chat Below")
-#     input_text = st.text_area("Enter the query")
+    # ---- SIDEBAR ----
+    authenticator.logout("Logout", "sidebar")
+    st.sidebar.title(f"Welcome {name}")
 
-#     #Perform analysis
-#     if st.button("Chat with data"):
-#         if input_text:
-#             st.info("Your Query: "+ input_text)
-#             with st.spinner("Generating response..."):
-#                 result = chat_with_csv(data,input_text)
-#                 st.success(result)
+    # Function to chat with CSV data
+    def chat_with_csv(df,query):
+        # Initialize SmartDataframe with DataFrame and LLM configuration
+        pandas_ai = SmartDataframe(df, config={"llm": llm})
+        # Chat with the DataFrame using the provided query
+        result = pandas_ai.chat(query)
+        return result
+
+    curr_df = pd.read_csv('jobs_bayt_c2.csv')
+
+    if curr_df is not None:
+        st.info("Files uploaded successfully")
+        st.dataframe(curr_df.head(3),use_container_width=True)
+        input_text = st.text_area("Enter the query")
+
+        #Perform analysis
+        if st.button("Chat with data"):
+            if input_text:
+                st.info("Your Query: "+ input_text)
+                with st.spinner("Generating response..."):
+                    result = chat_with_csv(curr_df,input_text)
+                    st.success(result)
+
+    # # Upload multiple CSV files
+    # input_csvs = st.sidebar.file_uploader("Upload your Data files", type=['csv'], accept_multiple_files=True)
+
+    # # Check if CSV files are uploaded
+    # if input_csvs:
+    #     # Select a CSV file from the uploaded files using a dropdown menu
+    #     selected_file = st.selectbox("Select your Data file", [file.name for file in input_csvs])
+    #     selected_index = [file.name for file in input_csvs].index(selected_file)
+
+    #     #load and display the selected csv file 
+    #     st.info("Files uploaded successfully")
+    #     data = pd.read_csv(input_csvs[selected_index])
+    #     st.dataframe(data.head(3),use_container_width=True)
+
+    #     #Enter the query for analysis
+    #     #st.info("Chat Below")
+    #     input_text = st.text_area("Enter the query")
+
+    #     #Perform analysis
+    #     if st.button("Chat with data"):
+    #         if input_text:
+    #             st.info("Your Query: "+ input_text)
+    #             with st.spinner("Generating response..."):
+    #                 result = chat_with_csv(data,input_text)
+    #                 st.success(result)

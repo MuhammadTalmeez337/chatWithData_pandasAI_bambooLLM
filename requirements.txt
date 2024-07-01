@@ -4,3 +4,4 @@ streamlit
 numpy==1.25.2
 pyyaml
 google.generativeai
+streamlit-authenticator==0.1.3
