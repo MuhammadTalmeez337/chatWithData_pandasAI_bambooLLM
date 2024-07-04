@@ -5,3 +5,4 @@ numpy==1.25.2
 pyyaml
 google.generativeai
 streamlit-authenticator==0.1.3
+streamlit-feedback==0.1.3

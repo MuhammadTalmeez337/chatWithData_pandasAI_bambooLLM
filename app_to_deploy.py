@@ -4,6 +4,7 @@ from pandasai import SmartDataframe
 from pandasai.smart_dataframe import SmartDataframe
 import streamlit_authenticator as stauth
 import pickle
+from streamlit_feedback import streamlit_feedback
 
 # from pandasai.llm import HuggingFaceTextGen
 # llm = HuggingFaceTextGen(
@@ -49,6 +50,10 @@ if authentication_status:
     #@st.cache
     # Set title for the Streamlit application
 
+    def handle_feedback(): 
+        st.write(st.session_state.fb_k) 
+        st.toast("✔ Feedback received!") 
+
     st.title("Chat with your data")
 
     st.image('charts for sreamlit.png', caption='PowerBI Dashboard')
@@ -80,6 +85,12 @@ if authentication_status:
                     result = chat_with_csv(curr_df,input_text)
                     st.success(result)
 
+        with st.form('form'): 
+            streamlit_feedback(feedback_type="thumbs", optional_text_label="You can write explanation of chosen feedback", 
+            align="flex-start", key='fb_k') 
+            st.form_submit_button('Save feedback', on_click=handle_feedback)
+    
+    
     # # Upload multiple CSV files
     # input_csvs = st.sidebar.file_uploader("Upload your Data files", type=['csv'], accept_multiple_files=True)
 
