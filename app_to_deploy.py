@@ -50,9 +50,10 @@ if authentication_status:
     #@st.cache
     # Set title for the Streamlit application
 
-    def handle_feedback(): 
-        st.write(st.session_state.fb_k) 
-        st.toast("✔ Feedback received!") 
+    # def handle_feedback(): 
+    #     st.write(st.session_state.fb_k) 
+    #     st.toast("✔ Feedback received!")
+
 
     st.title("Chat with your data")
 
@@ -85,10 +86,10 @@ if authentication_status:
                     result = chat_with_csv(curr_df,input_text)
                     st.success(result)
 
-        with st.form('form'): 
-            streamlit_feedback(feedback_type="thumbs", optional_text_label="You can write explanation of chosen feedback", 
+        #with st.form('form'): 
+        streamlit_feedback(feedback_type="thumbs", optional_text_label="You can write explanation of choosen feedback", 
             align="flex-start", key='fb_k') 
-            st.form_submit_button('Save feedback', on_click=handle_feedback)
+            
     
     
     # # Upload multiple CSV files
